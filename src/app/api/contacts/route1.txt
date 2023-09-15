@@ -1,0 +1,72 @@
+import connectDB from "@/utils/db"; // Import your database connection utility
+import { NextResponse } from "next/server";
+import Contact from "@/models/contact";
+import nodemailer from "nodemailer";
+
+
+export const POST = async (request) => {
+  // Extract contact data from the request body
+  const { name, email, message } = await request.json();
+  // Connect to the database
+  await connectDB();
+  // Create a new contact entry based on the request data
+  const newContact = new Contact({
+    name,
+    email,
+    message,
+  });
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "pacbot24@gmail.com",
+      pass: "ofzyqssefycvpawh",
+    },
+  });
+  const mailOptions = {
+    from: "pacbot24@gmail.com",
+    to: newContact.email,
+    subject: "Message Confirmation",
+    text: "Your message has been sent and received successfully!",
+  };
+
+  try {
+    // Save the new contact entry to the database
+    await newContact.save();
+     // Send confirmation email 
+     const info = await transporter.sendMail(mailOptions);
+     console.log("Confirmation email sent:", info.response);
+    // Return a response indicating success
+    return new NextResponse("message has been created", {
+      status: 201, // Use 201 for resource creation
+    });
+  } catch (err) {
+    // Return an error response if there's an issue with saving the contact entry
+    return new NextResponse(err.message, {
+      status: 500, // Use 500 for internal server error
+    });
+  }
+};
+// Get method handling
+export const GET = async () => {
+  try {
+    // Connect to the database
+    await connectDB();
+
+    // Retrieve appointments from the database (you might want to add sorting, filtering, or pagination here)
+    const contacts = await Contact.find();
+
+    // Return the list of appointments as a JSON response
+    return new NextResponse(JSON.stringify(contacts), {
+      status: 200, // Use 200 for success
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (err) {
+    // Return an error response if there's an issue with retrieving appointments
+    return new NextResponse(err.message, {
+      status: 500, // Use 500 for internal server error
+    });
+  }
+};
+

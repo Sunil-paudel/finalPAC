@@ -1,0 +1,82 @@
+/* page.module.css */
+
+.container {
+  max-width: 800px; /* Adjust the maximum width as needed */
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.createReminderForm {
+  margin-bottom: 20px;
+}
+
+.updateReminderFormInput,
+.updateReminderFormTextarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.updateReminderFormButton,
+.updateButton,
+.cancelButton,
+.editButton,
+.deleteButton {
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.calendarContainer {
+  margin-bottom: 20px;
+}
+
+.reminderList {
+  list-style: none;
+  padding: 0;
+}
+
+.reminder {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.reminderTitle {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.reminderDescription {
+  font-size: 14px;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  .updateReminderFormButton,
+  .updateButton,
+  .cancelButton,
+  .editButton,
+  .deleteButton {
+    font-size: 12px;
+  }
+}

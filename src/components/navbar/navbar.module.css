@@ -1,0 +1,37 @@
+.container {
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 22px;
+}
+.logoWrapper {
+  /* Set desired dimensions here */
+  width: 83px;
+  height: 61px;
+  left: 96px;
+  top: 53px;
+
+  margin-bottom: 1rem;
+  /* Add any other styling you want, e.g., padding, margin, etc. */
+}
+
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logout {
+  padding: 5px;
+  border: none;
+  background-color: #53c28b;
+  color: white;
+  cursor: pointer;
+  border-radius: 3px;
+}

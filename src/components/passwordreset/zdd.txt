@@ -1,0 +1,70 @@
+import { useState } from "react";
+
+const PasswordResetRequest = () => {
+  const [email, setEmail] = useState("");
+  const [emailExists, setEmailExists] = useState(false);
+  const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const checkEmailExists = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`/api/auth/register?email=${email}`);
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        
+        // Check if the entered email is in the data
+        const emailInData = data.some(item => item.email === email);
+        
+        setEmailExists(emailInData);
+  
+        if (emailInData) {
+          const resetResponse = await fetch(`/api/resetpassword`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email }),
+          });
+  
+          if (resetResponse.ok) {
+            setMessage("Password reset email sent.");
+          } else {
+            setMessage("Error sending password reset email.");
+          }
+        } else {
+          setMessage("Email not found. Please check your email address.");
+        }
+      } else {
+        setMessage("Error checking email.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setMessage("An error occurred. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Forgot Password?</h2>
+
+      <form>
+        <input
+          type="email"
+          placeholder="Enter your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <button type="button" onClick={checkEmailExists} disabled={isLoading}>
+          Reset Password
+        </button>
+      </form>
+      {message && <p>{message}</p>}
+    </div>
+  );
+};
+
+export default PasswordResetRequest;
