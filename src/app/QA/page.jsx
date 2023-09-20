@@ -16,7 +16,7 @@ const QA = () => {
    router?.push("/dashboard/login");
   }
   if (session.status === "authenticated"){
-    const OPENAI_API_KEY = process.env.CHATGPT_API_KEY;
+  
   return (
     <div className="center-container">
       <ChatBot />

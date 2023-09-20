@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
 
+
+
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [chatHistory, setChatHistory] = useState([]);
@@ -21,12 +23,17 @@ const ChatBot = () => {
   const chatContainerRef = useRef(null);
   const router = useRouter();
   const session = useSession();
+  if (session.status === loading) {
+    return <p>Loading...</p>;
+  }
   if (session.status === 'unauthenticated') {
     router?.push('/dashboard/login');
+
   }
 
   // Replace 'YOUR_OPENAI_API_KEY' with your actual OpenAI API key
-  const OPENAI_API_KEY = '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';
+  const OPENAI_API_KEY = process.env.CHATGPT_API_KEY;
+
 
   const prompts = [
     {
@@ -275,7 +282,7 @@ const ChatBot = () => {
         height: '100vh',
         margin: '0',
         padding: '0',
-        color: '#ffffff', // Updated text color
+       
       }}>
         <p>welcome {session.data?.user?.name}</p>
         <h1 style={{

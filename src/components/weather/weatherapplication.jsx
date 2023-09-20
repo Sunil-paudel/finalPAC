@@ -13,6 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
+const WEATHER_API = process.env.WEATHER_API;
 
 const Container = styled.div`
   background-color: var(--bg-color);
@@ -188,7 +189,7 @@ const WeatherApp = () => {
 
       // Fetch current weather data for the entered location
       fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=52ad3870d0687bcb81aeea967aefddc0`
+        `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${WEATHER_API}`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -196,7 +197,7 @@ const WeatherApp = () => {
 
           // Fetch forecast data after getting weather data
           fetch(
-            `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=52ad3870d0687bcb81aeea967aefddc0`
+            `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${WEATHER_API}`
           )
             .then((response) => response.json())
             .then((forecastData) => {
@@ -235,7 +236,7 @@ const WeatherApp = () => {
 
         // Fetch weather data for the current location
         fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=52ad3870d0687bcb81aeea967aefddc0`
+          `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${WEATHER_API}`
         )
           .then((response) => response.json())
           .then((data) => {
@@ -243,7 +244,7 @@ const WeatherApp = () => {
 
             // Fetch forecast data for the current location
             fetch(
-              `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=52ad3870d0687bcb81aeea967aefddc0`
+              `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${WEATHER_API}`
             )
               .then((response) => response.json())
               .then((forecastData) => {

@@ -2,6 +2,7 @@ import Possibility from "../components/possibility/Possibility";
 import Header from "@/components/header/Header";
 import Features from "@/components/features/Features";
 import PAC from "@/components/PAC/PAC";
+import 'dotenv/config';
 import ChatbotToggleButton from "@/components/ChatbotToggleButton";
 
 export default function Home() {
