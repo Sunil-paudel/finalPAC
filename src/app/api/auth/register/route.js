@@ -41,7 +41,7 @@ export const POST = async (request) => {
       from: process.env.GOOGLE_EMAIL,
       to: email, // Use the user's email for sending confirmation
       subject: "Registration Confirmation",
-      text: `Thank you for registering on our platform, ${name}! Your registration is successful.`,
+      text: `Thank you for registering on our platform, ${name}! Your registration is successful. if you have not applied for registration please visit http://localhost:3000/contact to  contact us.`,
     };
 
     await transporter.sendMail(mailOptions);

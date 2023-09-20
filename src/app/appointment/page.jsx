@@ -7,11 +7,6 @@ import moment from 'moment';
 import { useSession } from 'next-auth/react';
 import ChatbotToggleButton from '@/components/ChatbotToggleButton';
 
-export const metadata = {
-  title: "appointment Page",
-  description: "This page is used for scheduling appointments",
-};
-
 const localizer = momentLocalizer(moment);
 
 const CustomCalendar = () => {

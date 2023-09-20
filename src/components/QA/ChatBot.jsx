@@ -267,106 +267,194 @@ const ChatBot = () => {
   
   if (session.status === "authenticated") {
     console.log('Email:', session.data?.user?.email);
-
-    
-  return (
-    <div>
-       return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100vh', backgroundColor: '#f5f5f5', margin: '0', padding: '0' }}>
+    return (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        height: '100vh',
+        margin: '0',
+        padding: '0',
+        color: '#ffffff', // Updated text color
+      }}>
         <p>welcome {session.data?.user?.name}</p>
-      <h1 style={{ fontSize: '24px', marginBottom: '20px', color: 'rgb(70, 81, 81)' }}>Chat with PAC</h1>
-      <div style={{ width: '80%', maxHeight: '400px', overflowY: 'auto', backgroundColor: '#fff', border: '1px solid #ccc', padding: '10px', borderRadius: '5px' }} ref={chatContainerRef}>
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            style={{ padding: '5px', margin: '5px 0', borderRadius: '5px', color: '#292626', backgroundColor: message.role === 'user' ? '#e0e0e0' : '#b0d2ff' }}
-          >
-            {message.role === 'user' && selectedMessageIndex === index ? (
-              <div>
-                <input
-                  type="text"
-                  value={editedMessage}
-                  onChange={(e) => setEditedMessage(e.target.value)}
-                  placeholder="Edit your message"
-                />
-                <button onClick={saveEditedMessage}>Save</button>
-              </div>
-            ) : (
-              <div>
-                {message.text}
-                {message.role === 'user' && (
-                  <button onClick={() => selectMessageForEdit(index)}>Edit Message</button>
-                )}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-      <div style={{ width: '80%', marginTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        {showOptions ? (
-          <div>
-            <div style={{ fontWeight: 'bold', marginBottom: '10px', color: '#292626' }}>Choose your option below or ask me general questions:</div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              {prompts.map((prompt, index) => (
-                <button
-                  key={index}
-                  onClick={() => handlePromptClick(prompt)}
-                  style={{ padding: '10px', margin: '5px', backgroundColor: '#b0d2ff', color: '#292626', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
-                >
-                  {prompt.text}
-                </button>
-              ))}
+        <h1 style={{
+          fontSize: '2rem', // Updated font size
+          marginBottom: '20px',
+        }}>Chat with PAC</h1>
+        <div style={{
+          width: '80%',
+          maxHeight: '400px',
+          overflowY: 'auto',
+          boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', // Added box shadow
+          border: '1px solid #ccc',
+          padding: '10px',
+          borderRadius: '5px',
+        }} ref={chatContainerRef}>
+          {messages.map((message, index) => (
+            <div
+              key={index}
+              style={{
+                padding: '5px',
+                margin: '5px 0',
+                borderRadius: '5px',
+                // color: '#ffffff',
+                backgroundColor: message.role === 'user' ? '#a19999' : '#403939', // Updated message background color
+              }}
+            >
+              {message.role === 'user' && selectedMessageIndex === index ? (
+                <div>
+                  <input style={{ width: '100%' }}
+                    type="text"
+                    value={editedMessage}
+                    onChange={(e) => setEditedMessage(e.target.value)}
+                    placeholder="Edit your message"
+                  />
+                  <button onClick={saveEditedMessage}>Save</button>
+                </div>
+              ) : (
+                <div>
+                  {message.text}
+                  {message.role === 'user' && (
+                    <button style={{padding: '5px', marginLeft:'5px'}} onClick={() => selectMessageForEdit(index)}>Edit Message</button>
+                  )}
+                </div>
+              )}
             </div>
+          ))}
+        </div>
+        <div style={{
+          width: '80%',
+          marginTop: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}>
+          {showOptions ? (
+            <div>
+              <div style={{
+                fontWeight: 'bold',
+                marginBottom: '10px',
+              }}>Choose your option below or ask me general questions:</div>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}>
+                {prompts.map((prompt, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handlePromptClick(prompt)}
+                    style={{
+                      padding: '10px',
+                      margin: '5px',
+                      border: 'none',
+                      borderRadius: '5px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {prompt.text}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : null}
+          <textarea
+            value={question}
+            onChange={(e) => {
+              setQuestion(e.target.value);
+              setError('');
+            }}
+            onKeyPress={handleInputKeyPress}
+            placeholder='Say hi to see functions or ask a general question...'
+            style={{
+              width: '100%',
+              padding: '10px',
+              border: '1px solid #ccc',
+              borderRadius: '5px',
+              marginBottom: '10px',
+              resize: 'none',
+            }}
+            cols={100}
+            rows={10}
+          />
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '100%',
+            marginTop: '10px',
+          }}>
+            <button onClick={handleNewChat} style={{
+              backgroundColor: '#dc3545',
+              color: '#ffffff',
+              padding: '10px',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+            }}>
+              New Chat
+            </button>
+            <button style={{
+              backgroundColor: '#007bff',
+              color: '#ffffff',
+              padding: '10px',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+            }} onClick={toggleChatHistory}>
+              {showChatHistory ? 'Hide recent' : 'Show recent questions'}
+            </button>
+            <button onClick={goToHomePage} style={{
+              backgroundColor: '#dc3545',
+              color: '#ffffff',
+              padding: '10px',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+            }}>
+              Exit
+            </button>
           </div>
-        ) : null}
-        <textarea
-          value={question}
-          onChange={(e) => {
-            setQuestion(e.target.value);
-            setError('');
-          }}
-          onKeyPress={handleInputKeyPress}
-          placeholder='Say hi to see functions or ask a general question...'
-          style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '5px', marginBottom: '10px', resize: 'none' }}
-          cols={100}
-          rows={10}
-        />
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginTop: '10px' }}>
-          <button onClick={handleNewChat} style={{ backgroundColor: '#dc3545', color: '#fff', padding: '10px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-            New Chat
-          </button>
-          <button style={{ backgroundColor: '#007bff', color: '#fff', padding: '10px', border: 'none', borderRadius: '5px', cursor: 'pointer' }} onClick={toggleChatHistory}>
-            {showChatHistory ? 'Hide recent' : 'Show recent questions'}
-          </button>
-          <button onClick={goToHomePage} style={{ backgroundColor: '#dc3545', color: '#fff', padding: '10px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-            Exit
-          </button>
-        </div>
           {showChatHistory && (
-        <div style={{ width: '80%', backgroundColor: '#f5f5f5', border: '1px solid #ccc', padding: '10px', borderRadius: '5px', overflowY: 'auto', maxHeight: '300px', marginTop: '20px' }}>
-          <h2>Recent chat on web</h2>
-          <ul style={{ listStyleType: 'none', padding: 0 }}>
-            {recentQuestions.slice().reverse().map((question, index) => (
-              <li
-                key={index}
-                style={{ marginBottom: '10px', backgroundColor: '#e0e0e0', borderRadius: '5px', padding: '10px' }}
-              >
-                <strong>Question:</strong> {question.question}
-                <button onClick={() => handleEditClick(recentQuestions.length - 1 - index)}>move up to edit</button>              
-                <br />
-                <strong>Answer:</strong> {question.answer}
-                
-              </li>
-            ))}
-          </ul>
+            <div style={{
+              width: '80%',
+              backgroundColor: 'white',
+              border: '1px solid black',
+              padding: '10px',
+              borderRadius: '5px',
+              overflowY: 'auto',
+              maxHeight: '300px',
+              marginTop: '20px',
+            }}>
+              <h2>Recent chat on web</h2>
+              <ul style={{
+                listStyleType: 'none',
+                padding: 0,
+              }}>
+                {recentQuestions.slice().reverse().map((question, index) => (
+                  <li
+                    key={index}
+                    style={{
+                      marginBottom: '10px',
+                      backgroundColor: 'white)',
+                      borderRadius: '5px',
+                      padding: '10px',
+                      color: 'black',
+                    }}
+                  >
+                    <strong>Question:</strong> {question.question}
+                    <button onClick={() => handleEditClick(recentQuestions.length - 1 - index)}>move up to edit</button>
+                    <br />
+                    <strong>Answer:</strong> {question.answer}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
-      )}
-         
-     
       </div>
-    </div>
-    </div>
-  )
-}
-}
+    );
+    
+          }}
+
 export default ChatBot;

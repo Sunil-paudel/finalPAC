@@ -20,11 +20,11 @@ const handler = NextAuth({
           const user = await User.findOne({
             email: credentials.email,
           });
-
           if (user) {
             const isPasswordCorrect = await bcrypt.compare(
               credentials.password,
-              user.password
+              user.password,
+              
             );
 
             if (isPasswordCorrect) {
@@ -41,7 +41,7 @@ const handler = NextAuth({
                 from: process.env.GOOGLE_EMAIL,
                 to: user.email,
                 subject: "Login Notification",
-                text: "You have successfully logged in to our platform.",
+                text: "hi, You have successfully logged in to our platform. if it i snot you then please contact us via http://localhost:3000/contact .",
               };
 
               await transporter.sendMail(mailOptions);
