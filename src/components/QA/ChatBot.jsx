@@ -3,7 +3,8 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
-function QuestionAnswer() {
+
+const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [chatHistory, setChatHistory] = useState([]);
   const [question, setQuestion] = useState('');
@@ -15,6 +16,8 @@ function QuestionAnswer() {
   const [editedMessage, setEditedMessage] = useState('');
   const [systemContent, setSystemContent] = useState('');
   const [recentQuestions, setRecentQuestions] = useState([]); // Store recent questions
+
+
   const chatContainerRef = useRef(null);
   const router = useRouter();
   const session = useSession();
@@ -23,7 +26,7 @@ function QuestionAnswer() {
   }
 
   // Replace 'YOUR_OPENAI_API_KEY' with your actual OpenAI API key
-  const OPENAI_API_KEY = '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';
+  const OPENAI_API_KEY = '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';
 
   const prompts = [
     {
@@ -116,31 +119,6 @@ function QuestionAnswer() {
 
       const data = await response.json();
       const botMessage = data.choices[0].message.content.trim();
-      // if (!systemContent.includes(botMessage)) {
-      //   // Add the answer to the system content.
-      //   setSystemContent(`${systemContent}\n${botMessage}`);
-      
-      //   // Write the updated system content to the initial_system_context.txt file.
-      //   fetch('/initial_system_context.txt', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify({ updatedContent: systemContent }),
-      //   })
-      //     .then((response) => {
-      //       if (response.status === 200) {
-      //         console.log('System content updated successfully.');
-      //       } else {
-      //         console.error('Error updating system content.');
-      //       }
-      //     })
-      //     .catch((error) => {
-      //       console.error('Error updating system content:', error);
-      //     });
-      // }
-      
-
       const newMessage = { text: messageContent, role: 'user' };
       const systemResponse = { text: botMessage, role: 'bot' };
 
@@ -149,13 +127,16 @@ function QuestionAnswer() {
 
       // Send both question and answer to the server here
       try {
+        const email = session.data?.user?.email;
+        
         const serverResponse = await fetch('/api/chatbot', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ question: messageContent, answer: botMessage }),
+          body: JSON.stringify({ question: messageContent, answer: botMessage, email }),
         });
+
 
         if (serverResponse.status === 201) {
             console.log('Data sent successfully to the server');
@@ -169,9 +150,27 @@ function QuestionAnswer() {
         console.error('Error sending data to the server:', serverError);
       }
 
-      if (messageContent.toLowerCase() === 'hi' && !showOptions) {
+      if (
+        (messageContent.toLowerCase() === 'hi' ||
+          messageContent.toLowerCase() === 'hello' ||
+          messageContent.toLowerCase() === 'questions' ||
+          messageContent.toLowerCase() === 'appointment' ||
+          messageContent.toLowerCase() === 'question' ||
+          messageContent.toLowerCase() === 'appointments' ||
+          messageContent.toLowerCase() === 'weathers' ||
+          messageContent.toLowerCase() === 'weather update' ||
+          messageContent.toLowerCase() === 'weathers update' ||
+          messageContent.toLowerCase() === 'weather updates' ||
+          messageContent.toLowerCase() === 'events' ||
+          messageContent.toLowerCase() === 'event' ||
+          messageContent.toLowerCase() === 'prompts' ||
+          messageContent.toLowerCase() === 'prompt' ||
+          messageContent.toLowerCase() === 'weather') &&
+        !showOptions
+      ) {
         setShowOptions(true);
       }
+      
     } catch (error) {
       setLoading(false);
       setError('Something went wrong while fetching data. Please try again.');
@@ -180,17 +179,32 @@ function QuestionAnswer() {
   }
 
   useEffect(() => {
+    const fetchChatHistory = async () => {
     // Make a GET request to fetch recent questions from the database
-    fetch('/api/chatbot')
-      .then((response) => response.json())
-      .then((data) => {
-        const last30Messages = data.slice(-10);
-      setRecentQuestions(last30Messages);
-    })
-    .catch((error) => {
-      console.error('Error fetching recent questions:', error);
-    });
-}, []);
+    try {
+      if (session && session.data?.user.email) {
+        const response = await fetch(`/api/chatbot?email=${session.data.user.email}`);
+
+        if (!response.ok) {
+          console.error('Error fetching chathistory data:', response.statusText);
+          return; // Exit early if there's an error
+        }
+        
+        const data = await response.json();
+        setRecentQuestions(data);
+
+      
+        // Filter the recent questions based on the user's email
+      }
+        
+      }
+      catch (error) {
+        console.error('Error fetching recent questions:', error);
+      }
+    }
+    fetchChatHistory();
+  },[session]);
+
 
   const handleInputKeyPress = async (e) => {
     if (e.key === 'Enter') {
@@ -245,11 +259,19 @@ function QuestionAnswer() {
       setEditedMessage('');
     }
   };
+  const handleEditClick = (index) => {
+    // Retrieve the question and answer to edit
+    const questionToEdit = recentQuestions[index].question;
+    callOpenAIAPI(questionToEdit);
+  }
+  
   if (session.status === "authenticated") {
     console.log('Email:', session.data?.user?.email);
 
     
   return (
+    <div>
+       return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100vh', backgroundColor: '#f5f5f5', margin: '0', padding: '0' }}>
         <p>welcome {session.data?.user?.name}</p>
       <h1 style={{ fontSize: '24px', marginBottom: '20px', color: 'rgb(70, 81, 81)' }}>Chat with PAC</h1>
@@ -320,28 +342,31 @@ function QuestionAnswer() {
             Exit
           </button>
         </div>
-        {showChatHistory && (
-  <div style={{ marginTop: '20px', width: '80%', backgroundColor: '#f5f5f5', border: '1px solid #ccc', padding: '10px', borderRadius: '5px' }}>
-    <h2>Recent chat on web</h2>
-    <ul style={{ listStyleType: 'none', padding: 0 }}>
-      {recentQuestions.map((question, index) => (
-        <li
-          key={index}
-          style={{ marginBottom: '10px', backgroundColor: '#e0e0e0', borderRadius: '5px', padding: '10px' }}
-        >
-          <strong>Question:</strong> {question.question}
-          <br />
-          <strong>Answer:</strong> {question.answer}
-          </li>
-      ))}
-    </ul>
-  </div>
-)}
-
-        
+          {showChatHistory && (
+        <div style={{ width: '80%', backgroundColor: '#f5f5f5', border: '1px solid #ccc', padding: '10px', borderRadius: '5px', overflowY: 'auto', maxHeight: '300px', marginTop: '20px' }}>
+          <h2>Recent chat on web</h2>
+          <ul style={{ listStyleType: 'none', padding: 0 }}>
+            {recentQuestions.slice().reverse().map((question, index) => (
+              <li
+                key={index}
+                style={{ marginBottom: '10px', backgroundColor: '#e0e0e0', borderRadius: '5px', padding: '10px' }}
+              >
+                <strong>Question:</strong> {question.question}
+                <button onClick={() => handleEditClick(recentQuestions.length - 1 - index)}>move up to edit</button>              
+                <br />
+                <strong>Answer:</strong> {question.answer}
+                
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+         
+     
       </div>
     </div>
-  );
-}}
-
-export default QuestionAnswer;
+    </div>
+  )
+}
+}
+export default ChatBot;

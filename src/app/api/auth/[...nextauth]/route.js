@@ -74,4 +74,50 @@ const handler = NextAuth({
   // NEXTAUTH_URL: process.env.NEXTAUTH_URL || "http://localhost:3000",
 });
 
+// const GOOGLE_OAUTH_SCOPES = [
+//   'openid',
+//   'profile',
+//   'email',
+//   'https://www.googleapis.com/auth/calendar',
+//   'https://www.googleapis.com/auth/drive',
+//   // Add other scopes here
+// ];
+
+// GoogleProvider({
+//   clientId: process.env.GOOGLE_CLIENT_ID,
+//   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+//   scope: GOOGLE_OAUTH_SCOPES.join(' '), // Request all scopes as a space-separated string
+//   async authorize(credentials, profile) {
+//     // Your authentication logic here
+
+//     // Assuming you have obtained an access token
+//     const accessToken = credentials.accessToken;
+
+//     // Accessing user profile information
+//     const userProfile = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+//       headers: {
+//         Authorization: `Bearer ${accessToken}`,
+//       },
+//     }).then(response => response.json());
+
+//     // Accessing Google Calendar events (example)
+//     const calendarEvents = await fetch('https://www.googleapis.com/calendar/v3/events', {
+//       headers: {
+//         Authorization: `Bearer ${accessToken}`,
+//       },
+//     }).then(response => response.json());
+
+//     // Accessing Google Drive files (example)
+//     const driveFiles = await fetch('https://www.googleapis.com/drive/v3/files', {
+//       headers: {
+//         Authorization: `Bearer ${accessToken}`,
+//       },
+//     }).then(response => response.json());
+
+//     // You can make similar API requests for other scopes as needed
+
+//     return userProfile; // You can return any data you need from the authorized user's profile
+//   },
+// });
+
 export { handler as GET, handler as POST };

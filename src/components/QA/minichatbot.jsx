@@ -18,7 +18,7 @@ function QuestionAnswer() {
   const router = useRouter();
 
   // Replace 'YOUR_OPENAI_API_KEY' with your actual OpenAI API key
-  const OPENAI_API_KEY = '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';
+  const OPENAI_API_KEY = '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';
 
   const prompts = [
     {

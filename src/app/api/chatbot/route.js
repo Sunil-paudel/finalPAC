@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import Question from "@/models/question";
 
 export const POST = async (request) => {
-  const { question, answer } = await request.json();
+  const { question, answer, email } = await request.json();
 
   await connect();
 
@@ -20,6 +20,7 @@ export const POST = async (request) => {
     const newQuestion = new Question({
       question,
       answer,
+      email,
     });
 
     try {
@@ -42,13 +43,15 @@ export const POST = async (request) => {
 };
 
 // Get method handling
-export const GET = async () => {
+export const GET = async (request) => {
+  const url = new URL(request.url);
+  const email = url.searchParams.get("email");
+  
   try {
-    // Connect to the database
-    await connect();
 
+    await connect();
     // Retrieve appointments from the database (you might want to add sorting, filtering, or pagination here)
-    const quesetions = await Question.find();
+    const quesetions = await Question.find(email && { email });
 
      // Filter out questions with specific content (e.g., "hi" or "hello")
      const filteredQuestions = quesetions.filter(question => !["hi", "hello"].includes(question.question.toLowerCase()));
