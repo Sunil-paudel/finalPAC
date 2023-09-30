@@ -35,3 +35,35 @@
   cursor: pointer;
   border-radius: 3px;
 }
+
+/* Add this to your CSS file */
+
+/* Hide the regular links by default */
+.links > a {
+  display: none;
+}
+
+/* Show the regular links when mobileMenuOpen is true */
+.links > a.show-mobile-menu {
+  display: block;
+}
+
+/* Style the mobile menu toggle button */
+.menuToggle {
+  display: block; /* Show this button by default */
+}
+
+@media (max-width: 768px) {
+  /* Media query for screens with a maximum width of 768px (adjust as needed) */
+  .links > a.show-mobile-menu {
+    display: block; /* Show regular links */
+  }
+
+  .menuToggle {
+    display: block; /* Show the menu toggle button */
+  }
+
+  .links > a {
+    display: none; /* Hide regular links */
+  }
+}
