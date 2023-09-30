@@ -41,7 +41,7 @@ const handler = NextAuth({
                 from: process.env.GOOGLE_EMAIL,
                 to: user.email,
                 subject: "Login Notification",
-                text: "hi, You have successfully logged in to our platform. if it i snot you then please contact us via http://localhost:3000/contact .",
+                text: "hi, You have successfully logged in to our platform. if it i snot you then please contact us via https://paudelschatbot.vercel.app/contact .",
               };
 
               await transporter.sendMail(mailOptions);
