@@ -39,14 +39,7 @@
 /* Add this to your CSS file */
 
 /* Hide the regular links by default */
-.links > a {
-  display: none;
-}
 
-/* Show the regular links when mobileMenuOpen is true */
-.links > a.show-mobile-menu {
-  display: block;
-}
 
 /* Style the mobile menu toggle button */
 .menuToggle {
