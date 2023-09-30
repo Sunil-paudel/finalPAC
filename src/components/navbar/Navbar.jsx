@@ -5,7 +5,7 @@ import styles from "./navbar.module.css";
 import DarkModeToggle from "../DarkModeToggle/DarkModeToggle";
 import { signOut, useSession } from "next-auth/react";
 import Image from 'next/image';
-import logo from './logo.PNG';
+
 
 const links = [
   {
@@ -46,7 +46,13 @@ const Navbar = () => {
   return (
     <div className={styles.container}>
       <Link href="/" className={styles.logo}>
-         <Image src={logo} alt="logo" height={61} width={83} priority={false} />
+      <Image
+            src="/logo.png"
+            alt="logo"
+            priority
+            height={61} width={83}
+           
+          />
       </Link>
       <div className={styles.links}>
         <DarkModeToggle />

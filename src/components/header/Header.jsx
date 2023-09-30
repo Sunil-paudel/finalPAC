@@ -2,8 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import './header.css';
-import peopleImage from './people.png';
-import aiImage from './ai.png';
+
 
 const Header = () => (
   <div className="gpt3__header section__padding" id="home">
@@ -18,14 +17,18 @@ const Header = () => (
 
       <div className="gpt3__header-content__people">
         {/* Use the Image component */}
-        <Image src={peopleImage} alt="people" priority  height={100} width={100}/>
+        <Image src="/people.png"
+        alt="people" 
+        priority  
+        height={100} width={100}
+        />
         <p>1,600 people requested access a visit in the last 24 hours</p>
       </div>
     </div>
 
     <div className="gpt3__header-image">
       {/* Use the Image component */}
-      <Image src={aiImage} alt="ai-pic" priority={false} />
+      <Image src='/ai.png' alt="ai-pic" priority width={836} height={844}/>
     </div>
   </div>
 );

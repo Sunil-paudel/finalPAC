@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import React from 'react';
 import styles from './footer.module.css';
-import logo from './logo.PNG';
+
 import Link from 'next/link';
 
 const Footer = () => (
@@ -10,7 +10,15 @@ const Footer = () => (
     <div className={styles.gpt3__footer} >
     <div className={styles.gpt3__footer_links}>
       <div className={styles.gpt3__footer_links_logo}>
-      <Image src={logo} alt="logo" height={61} width={83} priority={false} />
+      <Link href="/" className={styles.logo}>
+      <Image
+            src="/logo.png"
+            alt="logo"
+            priority
+            height={61} width={83}
+           
+          />
+      </Link>
         <p>Group 2, VU - 2023 block 5, Sydney Campus, <br /> All Rights Reserved</p>
       </div>
       

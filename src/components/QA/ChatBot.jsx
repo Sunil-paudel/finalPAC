@@ -3,9 +3,6 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
-
-
-
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [chatHistory, setChatHistory] = useState([]);
@@ -19,22 +16,12 @@ const ChatBot = () => {
   const [systemContent, setSystemContent] = useState('');
   const [recentQuestions, setRecentQuestions] = useState([]); // Store recent questions
 
-
   const chatContainerRef = useRef(null);
   const router = useRouter();
   const session = useSession();
-  if (session.status === loading) {
-    return <p>Loading...</p>;
-  }
-  if (session.status === 'unauthenticated') {
-    router?.push('/dashboard/login');
-
-  }
-
-  // Replace 'YOUR_OPENAI_API_KEY' with your actual OpenAI API key
   const OPENAI_API_KEY = process.env.CHATGPT_API_KEY;
 
-
+  
   const prompts = [
     {
       text: 'Schedule Appointment',
@@ -57,30 +44,8 @@ const ChatBot = () => {
       },
     },
   ];
-
+  // Initialize system content
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  function scrollToBottom() {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-    }
-  }
-
-  useEffect(() => {
-    const savedChatHistory = Cookies.get('chatHistory');
-    if (savedChatHistory) {
-      setChatHistory(JSON.parse(savedChatHistory));
-    }
-  }, []);
-
-  useEffect(() => {
-    Cookies.set('chatHistory', JSON.stringify(chatHistory), { expires: 30 });
-  }, [chatHistory]);
-
-  useEffect(() => {
-    // Load system content from the text file
     fetch('/initial_system_context.txt')
       .then((response) => response.text())
       .then((data) => {
@@ -91,6 +56,38 @@ const ChatBot = () => {
       });
   }, []);
 
+  // Handle user authentication status
+  useEffect(() => {
+    if (session.status === 'unauthenticated') {
+      router?.push('/dashboard/login');
+    }
+  }, [session, router]);
+
+  // Scroll to the bottom of the chat container
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  function scrollToBottom() {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }
+
+  // Load chat history from cookies
+  useEffect(() => {
+    const savedChatHistory = Cookies.get('chatHistory');
+    if (savedChatHistory) {
+      setChatHistory(JSON.parse(savedChatHistory));
+    }
+  }, []);
+
+  // Save chat history to cookies
+  useEffect(() => {
+    Cookies.set('chatHistory', JSON.stringify(chatHistory), { expires: 30 });
+  }, [chatHistory]);
+
+  // Function to call the OpenAI API
   async function callOpenAIAPI(messageContent) {
     try {
       setLoading(true);
@@ -135,7 +132,6 @@ const ChatBot = () => {
       // Send both question and answer to the server here
       try {
         const email = session.data?.user?.email;
-        
         const serverResponse = await fetch('/api/chatbot', {
           method: 'POST',
           headers: {
@@ -144,19 +140,18 @@ const ChatBot = () => {
           body: JSON.stringify({ question: messageContent, answer: botMessage, email }),
         });
 
-
         if (serverResponse.status === 201) {
-            console.log('Data sent successfully to the server');
-          } else if (serverResponse.status === 200) {
-            console.log('Data is "hi" or "hello," so it was not sent to the database');
-          } else {
-            console.error('Error sending data to the server');
-          }
-          
+          console.log('Data sent successfully to the server');
+        } else if (serverResponse.status === 200) {
+          console.log('Data is "hi" or "hello," so it was not sent to the database');
+        } else {
+          console.error('Error sending data to the server');
+        }
       } catch (serverError) {
         console.error('Error sending data to the server:', serverError);
       }
 
+      
       if (
         (messageContent.toLowerCase() === 'hi' ||
           messageContent.toLowerCase() === 'hello' ||
@@ -171,13 +166,11 @@ const ChatBot = () => {
           messageContent.toLowerCase() === 'events' ||
           messageContent.toLowerCase() === 'event' ||
           messageContent.toLowerCase() === 'prompts' ||
-          messageContent.toLowerCase() === 'prompt' ||
           messageContent.toLowerCase() === 'weather') &&
         !showOptions
       ) {
         setShowOptions(true);
       }
-      
     } catch (error) {
       setLoading(false);
       setError('Something went wrong while fetching data. Please try again.');
@@ -185,34 +178,29 @@ const ChatBot = () => {
     }
   }
 
+  // Fetch recent questions from the server
   useEffect(() => {
     const fetchChatHistory = async () => {
-    // Make a GET request to fetch recent questions from the database
-    try {
-      if (session && session.data?.user.email) {
-        const response = await fetch(`/api/chatbot?email=${session.data.user.email}`);
+      try {
+        if (session && session.data?.user.email) {
+          const response = await fetch(`/api/chatbot?email=${session.data.user.email}`);
 
-        if (!response.ok) {
-          console.error('Error fetching chathistory data:', response.statusText);
-          return; // Exit early if there's an error
+          if (!response.ok) {
+            console.error('Error fetching chathistory data:', response.statusText);
+            return; // Exit early if there's an error
+          }
+
+          const data = await response.json();
+          setRecentQuestions(data);
         }
-        
-        const data = await response.json();
-        setRecentQuestions(data);
-
-      
-        // Filter the recent questions based on the user's email
-      }
-        
-      }
-      catch (error) {
+      } catch (error) {
         console.error('Error fetching recent questions:', error);
       }
-    }
+    };
     fetchChatHistory();
-  },[session]);
+  }, [session]);
 
-
+  // Handle user input and send messages
   const handleInputKeyPress = async (e) => {
     if (e.key === 'Enter') {
       if (!question.trim()) {
@@ -225,29 +213,35 @@ const ChatBot = () => {
     }
   };
 
+  // Handle clicking on prompts
   const handlePromptClick = (prompt) => {
     prompt.action();
   };
 
+  // Start a new chat
   const handleNewChat = () => {
     setMessages([]);
     setShowOptions(false);
     scrollToBottom();
   };
 
+  // Toggle chat history
   const toggleChatHistory = () => {
     setShowChatHistory(!showChatHistory);
   };
 
+  // Navigate to the home page
   const goToHomePage = () => {
     router.push('/'); // Replace '/' with the actual path to your home page
   };
 
+  // Select a message for editing
   const selectMessageForEdit = (index) => {
     setSelectedMessageIndex(index);
     setEditedMessage(messages[index].text);
   };
 
+  // Save edited message
   const saveEditedMessage = () => {
     if (selectedMessageIndex !== null) {
       const editedUserMessage = { text: editedMessage, role: 'user' };
@@ -266,14 +260,14 @@ const ChatBot = () => {
       setEditedMessage('');
     }
   };
+
+  // Handle editing a message
   const handleEditClick = (index) => {
-    // Retrieve the question and answer to edit
     const questionToEdit = recentQuestions[index].question;
     callOpenAIAPI(questionToEdit);
-  }
-  
-  if (session.status === "authenticated") {
-    console.log('Email:', session.data?.user?.email);
+  };
+
+  if (session.status === 'authenticated') {
     return (
       <div style={{
         display: 'flex',
@@ -282,7 +276,6 @@ const ChatBot = () => {
         height: '100vh',
         margin: '0',
         padding: '0',
-       
       }}>
         <p>welcome {session.data?.user?.name}</p>
         <h1 style={{
@@ -305,7 +298,6 @@ const ChatBot = () => {
                 padding: '5px',
                 margin: '5px 0',
                 borderRadius: '5px',
-                // color: '#ffffff',
                 backgroundColor: message.role === 'user' ? '#a19999' : '#403939', // Updated message background color
               }}
             >
@@ -323,7 +315,7 @@ const ChatBot = () => {
                 <div>
                   {message.text}
                   {message.role === 'user' && (
-                    <button style={{padding: '5px', marginLeft:'5px'}} onClick={() => selectMessageForEdit(index)}>Edit Message</button>
+                    <button style={{ padding: '5px', marginLeft: '5px' }} onClick={() => selectMessageForEdit(index)}>Edit Message</button>
                   )}
                 </div>
               )}
@@ -461,7 +453,7 @@ const ChatBot = () => {
         </div>
       </div>
     );
-    
-          }}
+  }
+};
 
 export default ChatBot;

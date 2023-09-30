@@ -7,7 +7,7 @@ const Possibility = () => (
     <div className="gpt3__possibility-image">
       {/* Use the Image component */}
       <Image
-        src="/possibility.png" // Replace with the direct link to your image
+        src="/possibility.png" 
         alt="possibility"
         width={600}
         height={400}

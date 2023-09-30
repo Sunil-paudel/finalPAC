@@ -7,6 +7,11 @@ import moment from 'moment';
 import { useSession } from 'next-auth/react';
 import ChatbotToggleButton from '@/components/ChatbotToggleButton';
 
+ const metadata = {
+  title: "appointment Page",
+  description: "This page is used for scheduling appointments",
+};
+
 const localizer = momentLocalizer(moment);
 
 const CustomCalendar = () => {
@@ -134,11 +139,6 @@ const CustomCalendar = () => {
       console.log(err);
     }
   };
-  
-   
-  
-  
-
   if (session.status === "authenticated") {
     console.log('Email:', session.data?.user?.email);
 

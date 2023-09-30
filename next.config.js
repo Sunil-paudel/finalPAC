@@ -13,6 +13,9 @@ const nextConfig = {
       GOOGLE_PASSWORD: process.env.GOOGLE_PASSWORD,
       WEATHER_API: process.env.WEATHER_API,
     },
+    images: {
+      domains: ["images.pexels.com", "www.dropbox.com"]
+    },
   };
   
   module.exports = nextConfig;

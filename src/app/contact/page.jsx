@@ -49,7 +49,7 @@ const Contact = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Let's Keep in Touch</h1>
+      <h1 className={styles.title}>Let&apos;s Keep in Touch</h1>
       <div className={styles.content}>
         <div className={styles.imgContainer}>
           <Image
@@ -57,7 +57,7 @@ const Contact = () => {
             alt=""
             fill={true}
             className={styles.image}
-            priority={false}
+            priority
             sizes="(max-width: 600px) 100vw, 50vw"
           />
         </div>
