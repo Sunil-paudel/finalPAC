@@ -70,7 +70,7 @@ const handler = NextAuth({
   pages: {
     error: "/dashboard/login",
   },
-  // secret: process.env.NEXTAUTH_SECRET,
+   secret: process.env.NEXTAUTH_SECRET,
   // NEXTAUTH_URL: process.env.NEXTAUTH_URL || "http://localhost:3000",
 });
 
