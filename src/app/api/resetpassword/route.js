@@ -82,7 +82,7 @@ async function sendPasswordResetEmail(recipientEmail, resetToken) {
     to: recipientEmail, // Use the recipient's email
     subject: "Password Reset",
     text: `Click the following link to reset your password: 
-      http://localhost:3000/reset-password and here is your OTP ${resetToken}` ,
+      https://paudelschatbot.vercel.app/reset-password and here is your OTP ${resetToken}` ,
   };
 
   await transporter.sendMail(mailOptions);
