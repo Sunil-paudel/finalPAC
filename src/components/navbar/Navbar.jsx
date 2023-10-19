@@ -9,12 +9,6 @@ import Image from 'next/image';
 
 const links = [
   {
-    id: 1,
-    title: "Home",
-    url: "/",
-  },
-    
-  {
     id: 2,
     title: "Appointment",
     url: "/appointment",
