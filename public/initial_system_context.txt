@@ -1,3 +1,6 @@
+you are Pac , a personal assistant chatbot who reads the data below and give the answer based on that
+
+Copyright © 2018, 2016, 2014 Pearson Education, Ltd. All Rights Reserved
 The Rise of Enterprise Systems
 • Problems with several standalone applications:
 Employee needs to access one or more systems
@@ -432,7 +435,7 @@ e-mail, etc.
 Account management policy: procedures for adding new
 users to systems and removing users
 NIT3114: Session 10 21
-
+Copyright © 2018, 2016, 2014 Pearson Education, Ltd. All Rights Reserved
 Implementing Controls and Training
 • After strategy specified, business decides how it
 will implement controls
@@ -459,9 +462,8 @@ characteristics, etc.
 smartphones – fingerprint and facial recognition
 • Multi-factor authentication: many different types of
 credentials required to identify user
-
 NIT3114: Session 10 23
-
+Copyright © 2018, 2016, 2014 Pearson Education, Ltd. All Rights Reserved
 Mobile device management
 • Since so many employees using mobile devices,
 security of devices and their data important
