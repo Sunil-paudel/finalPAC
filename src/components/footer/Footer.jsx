@@ -31,7 +31,7 @@ const Footer = () => (
       <div className={styles.gpt3__footer_links_div}>
         <h4>Get in touch</h4>
         <p>Group 2, VU - 2023 block 5, Sydney Campus</p>
-        <p>0413177566</p>
+        <p><a href="tel:+1234567890">Call us at <link>0413177566</link></a></p>
         <p>paudelsunil16@gmail.com</p>
       </div>
     </div>
