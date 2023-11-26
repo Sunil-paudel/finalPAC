@@ -32,7 +32,11 @@ const Footer = () => (
         <h4>Get in touch</h4>
         <p>Group 2, VU - 2023 block 5, Sydney Campus</p>
         <p><Link href="tel:+61413177566">call us</Link></p>
-        <p>paudelsunil16@gmail.com</p>
+        <p>
+          <Link href="mailto:paudelsunil16@gmail.com">
+              Contact via Email
+            </Link>
+        </p>
       </div>
     </div>
 
