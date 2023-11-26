@@ -26,7 +26,7 @@ const Footer = () => (
       <Link href="https://www.vu.edu.au/about-vu"><h4>VU</h4></Link>
         <Link href="/termsandconditions"><p>Terms & Conditions</p></Link>
         <Link href="/Privacy"><p>Privacy Policy</p></Link>
-        <p>Contact</p>
+        <Link href="/contact"><pcontact via message</p></Link>
       </div>
       <div className={styles.gpt3__footer_links_div}>
         <h4>Get in touch</h4>
