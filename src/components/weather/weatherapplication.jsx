@@ -21,24 +21,24 @@ const Container = styled.div`
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-   @media (max-width: 600px) {
-  WeatherDataTable,
-  ForecastTable {
-    display: block;
-    overflow-x: auto;
-  }
 
-  WeatherTableHeader,
-  WeatherTableCell,
-  TableHeader,
-  TableCell {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
+  @media (max-width: 600px) {
+    WeatherDataTable,
+    ForecastTable {
+      display: block;
+      overflow-x: auto;
+    }
+
+    WeatherTableHeader,
+    WeatherTableCell,
+    TableHeader,
+    TableCell {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+    }
   }
-}
 `;
-
 const Heading = styled.h2`
   font-size: 28px;
   margin-bottom: 20px;
