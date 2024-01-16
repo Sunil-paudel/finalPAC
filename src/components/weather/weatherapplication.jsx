@@ -21,15 +21,7 @@ const Container = styled.div`
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-`;
-
-const Heading = styled.h2`
-  font-size: 28px;
-  margin-bottom: 20px;
-  
-`;
-const mobStyle = styled.dic'
-  @media (max-width: 600px) {
+   @media (max-width: 600px) {
   WeatherDataTable,
   ForecastTable {
     display: block;
@@ -44,7 +36,15 @@ const mobStyle = styled.dic'
     width: 100%;
     box-sizing: border-box;
   }
-}'
+}
+`;
+
+const Heading = styled.h2`
+  font-size: 28px;
+  margin-bottom: 20px;
+  
+`;
+
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: column; /* Stack elements vertically */
