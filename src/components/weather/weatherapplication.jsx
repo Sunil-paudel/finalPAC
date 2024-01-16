@@ -28,7 +28,23 @@ const Heading = styled.h2`
   margin-bottom: 20px;
   
 `;
+const mobStyle = styled.dic'
+  @media (max-width: 600px) {
+  WeatherDataTable,
+  ForecastTable {
+    display: block;
+    overflow-x: auto;
+  }
 
+  WeatherTableHeader,
+  WeatherTableCell,
+  TableHeader,
+  TableCell {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}'
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: column; /* Stack elements vertically */
