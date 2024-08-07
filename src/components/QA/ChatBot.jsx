@@ -391,7 +391,17 @@ const ChatBot = () => {
               borderRadius: '5px',
               cursor: 'pointer',
             }}>
-              New Chat
+              New Chat 
+            </button>
+            <button  style={{
+              backgroundColor: '#dc3545',
+              color: '#ffffff',
+              padding: '10px',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+            }}>
+              Currently not working due to expired auth token
             </button>
             <button style={{
               backgroundColor: '#007bff',
